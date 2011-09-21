@@ -1,6 +1,6 @@
 class NameParser
   class << self
-    attr_reader :prefixes, :suffixes
+    attr_reader :prefixes, :suffixes, :last_prefixes
   end
   attr_reader :original, :prefix, :first, :middle, :last, :suffix
 
@@ -25,7 +25,17 @@ class NameParser
     'sr'
   ]
 
-  def initialize(string)
+  @last_prefixes = [
+    'de',
+    'del',
+    'di',
+    'la',
+    'mc',
+    'van'
+  ]
+
+  def initialize(string, opts ={})
+    @floating_last_name_prefix = opts[:floating_last_name_prefix] || false
     @original = string
     parse(@original)
   end
@@ -53,9 +63,26 @@ class NameParser
       @suffix = nil
     else
       @first = name_parts.shift
-      @last = name_parts.pop
-      @middle = (name_parts.length > 0 ? name_parts.join(" ") : nil)
+      @last, remaining_parts = extract_last_name(name_parts)
+      @middle = (remaining_parts.length > 0 ? remaining_parts.join(" ") : nil)
     end
+  end
+
+  def extract_last_name(name_parts)
+    last = []
+    last << name_parts.pop
+    if @floating_last_name_prefix
+      prefix = true
+      while name_parts.length > 0 && prefix == true
+        if is_last_name_prefix?(name_parts.last)
+          last.unshift(name_parts.pop)
+          prefix = true
+        else
+          prefix = false
+        end
+      end
+    end
+    [last.join(" "), name_parts]
   end
 
   def normalize_and_split(original)
@@ -87,6 +114,11 @@ class NameParser
 
   def is_suffix?(string)
     is_ix?(NameParser.suffixes, string)
+  end
+
+  def is_last_name_prefix?(string)
+    return false if string.nil? || string == ""
+    NameParser.last_prefixes.any? { |p| string.downcase.match(/^#{p}$/) }
   end
 
   def is_ix?(kind, string)

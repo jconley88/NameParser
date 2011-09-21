@@ -2,8 +2,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../name_parser"))
 require 'ruby-debug'
 
 describe NameParser do
+  let(:opts){ {} }
   before :each do
-    @parsed = NameParser.new(name)
+    @parsed = NameParser.new(name, opts)
   end
 
   context "when name is blank" do
@@ -227,6 +228,36 @@ describe NameParser do
 
     it "should set suffix to nil" do
       @parsed.suffix.should be_nil
+    end
+  end
+
+  context "when floating_surname_name_prefix flag is set" do
+    let(:opts) { {floating_last_name_prefix: true} }
+    context "when name is 'Jon Mc Conley'" do
+      let(:name) { "Jon Mc Conley" }
+      it "should combine common last name prefixes with the last name" do
+        @parsed.first.should == "Jon"
+        @parsed.middle.should be_nil
+        @parsed.last.should == "Mc Conley"
+      end
+    end
+
+    context "when name is 'Jon De La Conley'" do
+      let(:name) { "Jon De La Conley" }
+      it "should combine common last name prefixes with the last name" do
+        @parsed.first.should == "Jon"
+        @parsed.middle.should be_nil
+        @parsed.last.should == "De La Conley"
+      end
+    end
+  end
+
+  context "when floating_last_name_prefix flag is not set" do
+    let(:name) { "Jon Mc Conley" }
+    it "should NOT combine common last name prefixes with the last name" do
+      @parsed.first.should == "Jon"
+      @parsed.middle.should == "Mc"
+      @parsed.last.should == "Conley"
     end
   end
 end
