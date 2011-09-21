@@ -48,9 +48,14 @@ class NameParser
     if is_suffix? name_parts.last
       @suffix = name_parts.pop
     end
-    @first = name_parts.shift
-    @last = name_parts.pop
-    @middle = (name_parts.length > 0 ? name_parts.join(" ") : nil)
+    if name_parts.length < 2
+      @prefix = nil
+      @suffix = nil
+    else
+      @first = name_parts.shift
+      @last = name_parts.pop
+      @middle = (name_parts.length > 0 ? name_parts.join(" ") : nil)
+    end
   end
 
   def normalize_and_split(original)

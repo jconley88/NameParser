@@ -18,6 +18,30 @@ describe NameParser do
     end
   end
 
+  context "when name is one word" do
+    let(:name){"name"}
+
+    it "all attributes should be nil" do
+      @parsed.prefix.should be_nil
+      @parsed.first.should be_nil
+      @parsed.middle.should be_nil
+      @parsed.last.should be_nil
+      @parsed.suffix.should be_nil
+    end
+  end
+
+  context "when name is one word with prefix and suffix" do
+    let(:name){"Sir. Name iii"}
+
+    it "all attributes should be nil" do
+      @parsed.prefix.should be_nil
+      @parsed.first.should be_nil
+      @parsed.middle.should be_nil
+      @parsed.last.should be_nil
+      @parsed.suffix.should be_nil
+    end
+  end
+
   context "when name is 'Jon Conley'" do
     let(:name){'Jon Conley'}
 
