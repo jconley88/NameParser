@@ -173,4 +173,36 @@ describe NameParser do
       @parsed.last.should == "Conley"
     end
   end
+
+  context "when first word partially matches prefix" do
+    let(:name) { "Drake Last" }
+
+    it "should set first name to Drake" do
+      @parsed.first.should == "Drake"
+    end
+
+    it "should set last name to Last" do
+      @parsed.last.should == "Last"
+    end
+
+    it "should set prefix to nil" do
+      @parsed.prefix.should be_nil
+    end
+  end
+
+  context "when last word partially matches suffix" do
+    let(:name) { "First Srov" }
+
+    it "should set first name to First" do
+      @parsed.first.should == "First"
+    end
+
+    it "should set last name to Srov" do
+      @parsed.last.should == "Srov"
+    end
+
+    it "should set suffix to nil" do
+      @parsed.suffix.should be_nil
+    end
+  end
 end

@@ -71,15 +71,15 @@ class NameParser
   end
 
   def is_prefix?(string)
-    is?(NameParser.prefixes, string)
+    is_ix?(NameParser.prefixes, string)
   end
 
   def is_suffix?(string)
-    is?(NameParser.suffixes, string)
+    is_ix?(NameParser.suffixes, string)
   end
 
-  def is?(kind, string)
+  def is_ix?(kind, string)
     return false if string.nil? || string == ""
-    kind.any?{|k| string.downcase.match(k)}
+    kind.any?{|k| string.downcase.match(/^#{k}\.?$/)}
   end
 end
