@@ -56,13 +56,11 @@ class NameParser
   def normalize_and_split(original)
     comma_count = original.count(",")
     raise "Unparseable" if comma_count > 1
-    split = []
     if comma_count == 1
-      split = split_last_comma_first_middle(original)
+      split_last_comma_first_middle(original)
     else
-      split = split_first_middle_last(original)
+      split_first_middle_last(original)
     end
-    split
   end
 
   def split_last_comma_first_middle(string)
