@@ -30,6 +30,14 @@ class NameParser
     parse(@original)
   end
 
+  def self.header_array
+    %w{prefix, first, middle, last, suffix}
+  end
+
+  def to_array
+    [@prefix, @first, @middle, @last, @suffix]
+  end
+
   private
   def parse(original)
     name_parts = normalize_and_split(original)
