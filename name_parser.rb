@@ -46,7 +46,7 @@ class NameParser
   end
 
   def self.header_array
-    %w{prefix, first, middle, last, suffix}
+    %w{prefix first middle last suffix}
   end
 
   def to_array
