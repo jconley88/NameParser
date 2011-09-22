@@ -26,11 +26,16 @@ class NameParser
   ]
 
   @last_prefixes = [
+    'al',
     'de',
     'del',
+    'el',
+    'st',
     'di',
+    'da',
     'la',
     'mc',
+    'von',
     'van'
   ]
 
